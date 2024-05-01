@@ -6,8 +6,6 @@ app = Flask(__name__)
 
 
 
-# NOTION_SECRET_TOKEN = "secret_Mvecu8n7gB3Yylh6ZifR146X58uEWsjf1orynCLke58"
-# DATABASE_ID = "8cd4e4b8ca5a47abaa70c574060081ef"
 NOTION_SECRET_TOKEN = os.getenv("NOTION_SECRET_TOKEN")
 DATABASE_ID = os.getenv("DATABASE_ID")
 
