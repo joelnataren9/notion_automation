@@ -1,7 +1,6 @@
 from flask import Flask, request
 import requests
 import json
-from datetime import datetime, timezone
 import os
 app = Flask(__name__)
 
@@ -131,8 +130,7 @@ def add_expense_entry():
 
     return {"message": "Success"}, 200
 
-if __name__ == '__main__':
-    app.run(port=5000) 
-
+if __name__ == "__main__":
+    app.run(host="0.0.0.0")
 
 # from app import app
