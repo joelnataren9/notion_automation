@@ -32,47 +32,6 @@ def get_pages():
     return results
 
 
-
-# pages = get_pages()
-# for page in pages:
-#     page_id = page["id"]
-#     props = page["properties"]
-#     print(props)
-
-
-
-# def add_page():
-#     url = "https://api.notion.com/v1/pages"
-#     payload = {
-#         "parent": {
-#             "database_id": DATABASE_ID
-#         },
-#         "properties": {
-#             "Expense": {
-#                 "title": [
-#                     {
-#                         "text": {
-#                             "content": "Test Expense"
-#                         }
-#                     }
-#                 ]
-#             },
-#             "Amount": {
-#                 "number": 100.12
-#             },
-#             "Category": {
-#                 "multi_select": [
-#                     {
-#                         "name": "Food"
-#                     }
-#                 ]
-#             },
-#         }
-#     }
-#     response = requests.post(url, json=payload, headers=headers)
-#     data = response.json()
-#     print(data)
-
 @app.route("/", methods=["GET", "POST"])
 def home():
     return "Hello World"
@@ -124,6 +83,8 @@ def add_expense_entry():
                 }
             ]
         }
+    if not expense or not amount or not category:
+        return {"message": "Please provide all the required fields"}, 400
     response = requests.post(url, json=payload, headers=headers)
     data = response.json()
     print(data)
