@@ -2,6 +2,7 @@ from flask import Flask, request
 import requests
 import json
 import os
+import datetime
 app = Flask(__name__)
 
 
@@ -88,6 +89,50 @@ def add_expense_entry():
     print(data)
 
     return {"message": "Success"}, 200
+
+# Get all expenses for current month 
+@app.route("/get_expenses", methods=["GET"])
+def get_expenses():
+    pages = get_pages()
+    expenses = []
+    for page in pages:
+        properties = page["properties"]
+        date = properties["Date"]["date"]["start"]
+
+        current_month = datetime.datetime.now().month
+        year = datetime.datetime.now().year
+        print(date, current_month, year)
+
+        print(properties, end="\n\n")
+        try:
+            expense = properties["Expense"]["title"][0]["text"]["content"]
+        except:
+            expense = None
+        try:
+            amount = properties["Amount"]["number"]
+        except:
+            amount = None
+        try:
+            category = properties["Category"]["multi_select"][0]["name"]
+        except:
+            category = None
+        try:
+            comment = properties["Comment"]["rich_text"][0]["text"]["content"]
+        except:
+            comment = None
+
+        # Add the expense if it is from the current month
+        expense_month = int(date.split("-")[1])
+        expense_year = int(date.split("-")[0])
+        if expense_month == current_month and expense_year == year:
+            expenses.append({
+            "Expense": expense,
+            "Amount": amount,
+            "Category": category,
+            "Comment": comment,
+            "Date": date
+            })
+    return {"expenses": expenses}, 200
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0")
